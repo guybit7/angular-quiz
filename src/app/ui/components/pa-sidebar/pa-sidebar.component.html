@@ -1,0 +1,8 @@
+<aside
+  class="h-full bg-gray-800 w-64 flex flex-col overflow-hidden"
+  [id]="id()"
+>
+  <ng-content select="[sidebarHeader]"></ng-content>
+  <ng-content select="[sidebarBody]"></ng-content>
+  <ng-content select="[sidebarFooter]"></ng-content>
+</aside>

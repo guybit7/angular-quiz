@@ -1,0 +1,68 @@
+<p-confirmDialog></p-confirmDialog>
+<div id="quiz-container" class="h-full flex">
+  @if (injectAllQuestions.isLoading()) {
+    <div id="loading-wrapper" class="w-full flex items-center justify-center">
+      <pa-spinner id="main-spinner" label="loading..." />
+    </div>
+  } @else if (
+    injectAllQuestions.isError() || injectAllQuestions.data()?.length === 0
+  ) {
+    <div id="error-wrapper" class="w-full">
+      <error-page />
+    </div>
+  } @else if (isPostResultsFailed()) {
+    <div id="error-wrapper" class="flex w-full items-center justify-center">
+      <p class="text-red-800 font-bold text-2xl">
+        Sending results failed. Please try again later.
+      </p>
+    </div>
+  } @else {
+    @if (isUserRegisterd()) {
+      <sidebar
+        [results]="results()"
+        [currentView]="currentView()"
+        [completedQuiz]="completedQuiz()"
+        [questions]="injectAllQuestions.data()"
+        [currentQuestionIndex]="currentQuestionIndex()"
+        (sidebarEvent)="handleSidebarEvent($event)"
+      ></sidebar>
+    }
+    <div class="h-full flex items-center justify-center w-full">
+      @if (loadingPostResults()) {
+        <div
+          id="loading-wrapper"
+          class="w-full flex items-center justify-center"
+        >
+          <pa-spinner id="main-spinner" label="loading..." />
+        </div>
+      } @else {
+        <div
+          id="pages-wrapper"
+          class="flex items-center justify-center flex-1 h-full overflow-auto"
+        >
+          @if (currentView() === "welcome") {
+            <app-welcome
+              class="w-full"
+              (viewChange)="setView($event)"
+              (fullNameChange)="setFullName($event)"
+              (passwordChange)="setPassword($event)"
+            />
+          } @else if (currentView() === "test" && currentQuestion()) {
+            <app-question
+              [results]="results()"
+              [completedQuiz]="completedQuiz()"
+              [currentQuestionIndex]="currentQuestionIndex()"
+              [totalsQuestions]="injectAllQuestions.data()?.length || 0"
+              [question]="currentQuestion()!"
+              (answerSelected)="
+                handleAnswer($event.questionId, $event.answerId)
+              "
+            />
+          } @else if (currentView() === "summary") {
+            <app-summary />
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

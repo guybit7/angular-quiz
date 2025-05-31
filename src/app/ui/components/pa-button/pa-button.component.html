@@ -1,0 +1,9 @@
+<button
+  [id]="id()"
+  [disabled]="disabled()"
+  [type]="type()"
+  (click)="onClick.emit()"
+  class="w-full text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-600 bg-gray-600"
+>
+  {{ label() }}
+</button>

@@ -1,0 +1,48 @@
+<pa-sidebar id="quiz-sidebar" label="Quiz Sidebar">
+  <ng-container sidebarHeader>
+    <div
+      id="sidebar-welcome"
+      role="button"
+      tabindex="0"
+      class="flex items-center justify-center font-bold text-3xl h-[5rem] w-full cursor-pointer hover:bg-orange-500"
+      (click)="onItemClick('welcome')"
+    >
+      <span class="font-bold text-3xl">Welcome</span>
+    </div>
+  </ng-container>
+  <ng-container sidebarBody>
+    <div id="sidebar-body" class="flex flex-col overflow-y-auto h-full">
+      <ul class="flex flex-col" role="list">
+        @for (question of questions(); track question.id; let index = $index) {
+          <li role="listitem">
+            <sidebar-question-item
+              [question]="question"
+              [currentQuestionIndex]="currentQuestionIndex()"
+              [currentView]="currentView()"
+              [completedQuiz]="completedQuiz()"
+              [index]="index"
+              (itemClick)="onItemClick('test', index)"
+            ></sidebar-question-item>
+          </li>
+        }
+      </ul>
+    </div>
+  </ng-container>
+
+  <ng-container sidebarFooter>
+    <div
+      id="sidebar-summary"
+      role="button"
+      tabindex="0"
+      class="flex items-center justify-center h-[5rem] w-full"
+      [class.hover:bg-orange-500]="
+        completedQuiz() && currentView() !== 'summary'
+      "
+      [class.cursor-not-allowed]="!completedQuiz()"
+      [class.bg-sky-800]="currentView() === 'summary'"
+      (click)="completedQuiz() && onItemClick('summary')"
+    >
+      <span class="font-bold text-3xl">Summary</span>
+    </div>
+  </ng-container>
+</pa-sidebar>

@@ -1,0 +1,21 @@
+<div
+  class="h-[5rem] flex flex-col justify-around w-full p-2"
+  [class.hover:bg-orange-500]="completedQuiz()"
+  [class.bg-sky-800]="
+    currentView() === 'test' && currentQuestionIndex() === index()
+  "
+  [class.cursor-not-allowed]="!completedQuiz()"
+  [class.cursor-pointer]="completedQuiz()"
+  [class.bg-gray-700]="!completedQuiz()"
+  role="button"
+  tabindex="0"
+  (click)="completedQuiz() && itemClick.emit()"
+  (keydown.enter)="completedQuiz() && itemClick.emit()"
+>
+  <p class="font-bold">Question {{ index() + 1 }}</p>
+  @if (completedQuiz()) {
+    <p class="text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+      {{ question().description }}
+    </p>
+  }
+</div>

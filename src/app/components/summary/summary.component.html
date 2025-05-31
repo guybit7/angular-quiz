@@ -1,0 +1,35 @@
+<div
+  id="summary-container"
+  class="flex flex-col items-center justify-around w-[30rem] h-[25rem] bg-gray-800"
+>
+  <div id="summary-header" class="w-full flex flex-col gap-10 items-center">
+    <h1 id="summary-title" class="text-4xl font-bold">Test Completed</h1>
+    <p
+      id="test-status"
+      class="text-3xl font-bold border p-3"
+      [ngClass]="{
+        'text-green-500 border-green-500': isPassed(),
+        'text-red-500 border-red-500': !isPassed(),
+      }"
+    >
+      {{ isPassed() ? "Passed" : "Failed" }}
+    </p>
+  </div>
+  <div id="summary-body" class="w-full flex flex-col gap-3 items-center">
+    <div class="flex flex-col gap-2 items-center">
+      <p class="flex flex-row gap-2 text-2xl">
+        <strong>{{ result()?.correctAnswers }}</strong>
+        <span>/</span>
+        <span>{{ result()?.totalAnswers }}</span>
+      </p>
+      <h2 class="font-thin text-2xl">Correct Answers</h2>
+    </div>
+    <div class="w-full px-10">
+      <pa-progressbar
+        id="summary-progressbar"
+        [value]="result()?.score | number: '1.0-0'"
+      ></pa-progressbar>
+    </div>
+    <p class="text-center">Thank you for completing the test!</p>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div id="question-container" class="p-8 max-w-3xl mx-auto bg-gray-800">
+  <div id="question-header" class="flex justify-between items-start mb-6">
+    <h2 class="text-2xl font-medium">
+      Question {{ currentQuestionIndex() + 1 }} of {{ totalsQuestions() }}
+    </h2>
+    @if (!completedQuiz()) {
+      <p class="text-right text-red-600 text-2xl font-bold">
+        {{ timerValue() }}
+      </p>
+    }
+  </div>
+
+  <div id="question-body" class="flex flex-1 gap-8 mb-6">
+    <div class="flex-1">
+      <h2 class="text-lg mb-6">{{ question().description }}</h2>
+
+      <ul id="answers-list" class="space-y-3">
+        @for (answer of question().answers; track answer.id) {
+          <li>
+            <label
+              class="flex items-center space-x-3 p-3 rounded-lg text-white"
+              [class.hover:bg-orange-500]="!completedQuiz()"
+              [class.bg-orange-500]="submittedAnswerId() === answer.id"
+              [class.cursor-not-allowed]="completedQuiz()"
+              [class.cursor-pointer]="!completedQuiz()"
+            >
+              <input
+                type="radio"
+                name="answer"
+                [value]="answer.id"
+                [disabled]="
+                  completedQuiz() && submittedAnswerId() !== answer.id
+                "
+                [checked]="
+                  selectedAnswerId() === answer.id ||
+                  submittedAnswerId() === answer.id
+                "
+                (change)="handleAnswerSelectionOption(answer.id)"
+                class="w-4 h-4"
+                [class.cursor-not-allowed]="completedQuiz()"
+                [class.cursor-pointer]="!completedQuiz()"
+              />
+              <p class="text-white">{{ answer.description }}</p>
+            </label>
+          </li>
+        }
+      </ul>
+    </div>
+
+    @if (question().imageUrl) {
+      <div class="w-64">
+        <img
+          [src]="question().imageUrl"
+          alt="question image"
+          class="w-full rounded-lg shadow-md"
+        />
+      </div>
+    }
+  </div>
+
+  <div id="question-footer" class="flex justify-center w-full">
+    <pa-button
+      type="submit"
+      class="w-full"
+      [disabled]="!selectedAnswerId() || completedQuiz()"
+      label="Next"
+      (click)="handleNext()"
+      id="next-button"
+    ></pa-button>
+  </div>
+</div>
